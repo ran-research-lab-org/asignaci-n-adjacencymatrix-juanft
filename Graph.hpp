@@ -31,25 +31,59 @@ public:
     }
 
     // Implementar!! 
-    // Devuelve la cantidad de aristas
+    // Cuenta cuántas aristas existen en el grafo dirigido
+    // recorre toda la matriz de adyacencia y suma 1 cada vez que adjMatrix[i][j] == 1
     int numEdges() const {
-        return 0;
+
+        int count = 0;
+
+        for(int i = 0; i < numVertices; ++i){
+            for(int j = 0; j < numVertices; ++j){
+                if(adjMatrix[i][j] == 1)
+                    count ++;
+
+            }
+        }
+
+        return count;
     }
 
-    // Completa esta función
-    // Devuelve el in-degree de un vertice
+    // Completa esta funcion
+    // Devuelve cuantas aristas llegan al vertice u (su in-degree)
+    // Cuenta los 1s en la columna u de la matriz de adyacencia
+    // Tira un std::out_of_range si u no esta dentro del rango de vertice
     int inDegree(int u) const {
         if (u < 0 || u >= numVertices)
             throw std::out_of_range("Vertice fuera de rango");
-        else {
+        
+        int count = 0;
+        for(int i = 0; i < numVertices; ++i){
+            if(adjMatrix[i][u] == 1)
+                count++;
         }
+        return count;
     }
+       
+    
 
     // Completa esta función
-    // Devuelve cierto si u es el nodo con mayor inDegree.
-    // En caso de que haya varios nodos que tengan el mayor inDegree,
-    // devuelve true si u es uno de ellos
+    // Devuelve true si el vertice u tiene el mayor indegree del grafo
+    // o si es igual al valor maximo
+    // Compara inDegree(u) con todos los vertices
+    // Tira un std::out_of_range si u no es valido
     bool isInfluencer(int u) const  {
+        if (u < 0 || u >= numVertices)
+            throw std::out_of_range("Vertice fuera de rango");
+
+        int targetDegree = inDegree(u);
+
+        for (int i = 0; i < numVertices; ++i) {
+            if (inDegree(i) > targetDegree)
+                return false;
+        }
+        return true;
     }
+    
+
 };
 
